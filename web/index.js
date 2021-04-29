@@ -3,7 +3,7 @@ const app = choo()
 app.mount('body')
 
 //store procedures
-// app.use(require('./store-procedures/join-room'))
+app.use(require('./store-procedures/login'))
 
 //styles
 import './style.scss'

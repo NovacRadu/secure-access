@@ -1,7 +1,7 @@
 const {React, View, BlockInput, Shadow, Footer} = require('../template.jsx')
-module.exports = (state, emitter) => {
+module.exports = (state, emit) => {
     return <View class="room">
-    <form id="joinRoom" class="form" autocomplete="off" onsubmit={state.onJoinRoom}>
+    <form id="joinRoom" class="form" autocomplete="off" onsubmit={e => emit('login', e)}>
         <div class="control" style="text-align:center">
             <br/>
             <h1 style="color:pink"> Administrator management </h1>
