@@ -193,3 +193,10 @@ table, th, td {
   flex-direction: column;
   text-align: center;
 }
+.background {
+  background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0.5)), url("/images/rfid.jpg");
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

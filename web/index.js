@@ -5,6 +5,9 @@ app.mount('body')
 //store procedures
 app.use(require('./store-procedures/login'))
 app.use(require('./store-procedures/admin'))
+app.use(require('./store-procedures/scan'))
+
+
 
 
 //styles

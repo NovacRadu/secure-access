@@ -15,7 +15,7 @@ module.exports = (state, emit) => {
             <input name="Username" type="text" placeholder="Username" />
         </BlockInput>
         <BlockInput>
-            <input name="Passowrd" type="passowrd" placeholder="Password" />    
+            <input name="Passowrd" type="password" placeholder="Password" />    
         </BlockInput>
         <button type="submit" class="btn block-cube block-cube-hover">
             <Shadow/>

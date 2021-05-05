@@ -1,9 +1,6 @@
 const {React, View} = require('../template.jsx')
-const videoStream = require('../components/stream')
-const backButton = require('./back-button.svg')
 
-module.exports = (state, emit) => <View class="room">
-    <a href="/login">Administrare</a>
-
-    <h1>Acasa</h1>
+module.exports = (state, emit) => <View class="room background">
+    <a href="/login"><button>Administrare</button></a>
+    <h1 style="text-align:center" id="message"></h1>
 </View>

@@ -1,9 +1,6 @@
 const {React, View} = require('../template.jsx')
-const videoStream = require('../components/stream')
-const backButton = require('./back-button.svg')
-
 module.exports = (state, emit) => <View class="room">
-    <a href="/">Home</a>
+    <a href="/"><button>Home</button></a>
     <div class="admin-div">
         <h2>Pagina de Administrare</h2>
         <table class="admin-table"> 
@@ -21,7 +18,6 @@ module.exports = (state, emit) => <View class="room">
             <td><span style={'color: ' + (isIn ? 'green' : 'red')}>{isIn ? '☻' : '☹'}</span></td>
             
             <td>
-                
                 <button onclick={e => emit('admin:delete', e, name)}>Delete</button> 
                 <button onclick={e => emit('admin:edit', e)}>Edit</button>
             </td>
