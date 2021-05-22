@@ -1,18 +1,42 @@
 module.exports = (state, emitter) => {
-    state.page.scanned = 0
 
-    setInterval(() => {
-        const element = document.getElementById('message')
-        if (element) {
-            element.innerText = state.page.scanned === 0 ? 'Please Scan your card' : 
-                (state.page.scanned === 1 ? 'Found you!' : 'Invalid Card')
-            
-            element.style.color = state.page.scanned === 0 ? 'yellow' : 
-            (state.page.scanned === 1 ? 'green' : 'red')
-            state.page.scanned++
-            if (state.page.scanned > 2)
-                state.page.scanned = 0
+
+    emitter.on('socket:home', ({status, data, error, element}) => {
+        element.innerText = status ? 'Found you!' : 'Please Scan your card'
+        element.style.color = status ? 'green' : 'yellow'
+        if (error) {
+            element.innerText = 'Invalid Card'
+            element.style.color = 'red'
         }
-    }, 1000)
+
+    })
+    emitter.on('socket:admin', ({status, data, element}) => {
+        if (status) {
+            state.page.adminCardScanned = data
+            element.innerText = 'Card Scanned!'
+            element.style.color = 'green' 
+        }
+    })
+
+
+    const ws = state.page.ws = new WebSocket('ws://' + window.location.hostname + '/onEvent')
+    ws.onmessage = e => {
+        const { status, data, error } = JSON.parse(e.data)
+
+        const messageElement = document.getElementById('message')
+
+        messageElement && emitter.emit('socket:home', {status, data, error, element: messageElement})
+
+        const parent = document.getElementById('new-user')
+        if (parent) {
+            const [element] = parent.getElementsByTagName('span')
+            emitter.emit('socket:admin', {status, data, element})
+        }
+
+
+
+    }
+    ws.onclose = e => {}
+    ws.onopen = e => {}
 
 }

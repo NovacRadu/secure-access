@@ -37,5 +37,13 @@ module.exports = (state, emitter) => {
 
     })
 
+    emitter.on('user:new', e => {
+        const form = e.target.parentElement
+        const [userName, daysTillExpire] = form.getElementsByTagName('input')
+        const [typeOfUser] = form.getElementsByTagName('select')
+        
+        console.log(userName.value, typeOfUser.value, daysTillExpire.value)
+    })
+
 
 }

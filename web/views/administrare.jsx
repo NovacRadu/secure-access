@@ -1,30 +1,13 @@
 const {React, View} = require('../template.jsx')
+const UserList = require('../components/users')
+const AddUser = require('../components/new_user')
+
 module.exports = (state, emit) => <View class="room">
     <a href="/"><button>Home</button></a>
     <div class="admin-div">
         <h2>Pagina de Administrare</h2>
-        <table class="admin-table"> 
-        <tr>
-            <th>Username</th>
-            <th>Access</th>
-            <th>Expire</th>
-            <th>Is In</th>
-            <th>Action</th>
-        </tr>
-        {state.users.map(({name, whoami, expire, isIn}) => <tr>
-            <td>{name}</td>
-            <td>{whoami}</td>
-            <td>{expire}</td>
-            <td><span style={'color: ' + (isIn ? 'green' : 'red')}>{isIn ? '☻' : '☹'}</span></td>
-            
-            <td>
-                <button onclick={e => emit('admin:delete', e, name)}>Delete</button> 
-                <button onclick={e => emit('admin:edit', e)}>Edit</button>
-            </td>
-
-        </tr>)}
-        
-        </table>
+        {UserList(state, emit)}
+        {AddUser(state, emit)}
     </div>
 </View>
 

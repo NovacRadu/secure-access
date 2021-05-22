@@ -1,7 +1,7 @@
 "use strict";
 //apt install make gcc g++
-const Mfrc522 = require("mfrc522-rpi")
-const SoftSPI = require("rpi-softspi")
+const Mfrc522 = require('mfrc522-rpi')
+const SoftSPI = require('rpi-softspi')
 const softSPI = new SoftSPI({
   clock: 23, // pin number of SCLK
   mosi: 19, // pin number of MOSI
@@ -13,7 +13,7 @@ const softSPI = new SoftSPI({
 // I believe that channing pattern is better for configuring pins which are optional methods to use.
 const mfrc522 = new Mfrc522(softSPI).setResetPin(22).setBuzzerPin(18);
 const decoder = new TextDecoder()
-module.exports = (callback, workToDo) => {
+module.exports = (onInfo, workStack) => {
     setInterval(() => {
         //# reset card
         mfrc522.reset()
@@ -22,7 +22,7 @@ module.exports = (callback, workToDo) => {
         let response = mfrc522.findCard()
 
         if (!response.status) 
-            return callback({status: 0})
+            return onInfo({status: 0})
     
         response = mfrc522.getUid()
 
@@ -33,17 +33,15 @@ module.exports = (callback, workToDo) => {
 
         if (!mfrc522.authenticate(8, [0xff, 0xff, 0xff, 0xff, 0xff, 0xff], uid)) return
 
-        if(workToDo.hasWork) {
-            workToDo.hasWork = false
-            const data = Array.from(workToDo.data)
-            mfrc522.writeDataToBlock(8, data)
-            return workToDo.callback()
+        if(workStack.length) {
+            const fn = workStack.shift()
+            fn(arrayBuffer => mfrc522.writeDataToBlock(8, arrayBuffer))
         }
         const code = decoder.decode(new Uint8Array(mfrc522.getDataForBlock(8)))
 
         mfrc522.stopCrypto()
     
-        return callback({ status: 1, code })
+        return onInfo({ status: 1, code })
 
             // console.log("Card detected, CardType: " + response.bitSize);
     
@@ -80,5 +78,5 @@ module.exports = (callback, workToDo) => {
         // console.log("Block: 8 Data: " + );
     
         //# Stop
-    }, 500)
+    }, 1000)
 }
